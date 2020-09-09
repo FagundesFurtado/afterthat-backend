@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: echo ${{ secrets.CONFIGURATION }} >> .env
-    - uses: actions/upload-config@master
+    - uses: actions/upload-artifact@master
       with:
         name: config
         path: .env
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/download-config@master
+    - uses: actions/download-artifact@master
       with:
         name: config
         path: .
@@ -32,14 +32,14 @@ jobs:
       run: npm run build
     - name: Compress files
       run: tar -czf build.tar.gz .env dist package*.json pm2.json docker-compose.yml Dockerfile
-    - uses: actions/upload-artifacts@master
+    - uses: actions/upload-artifact@master
       with:
         name: master
         path: build.tar.gz
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifacts@master
+    - uses: actions/download-artifact@master
     - name: Send artifacts to Server
       uses: easingthemes/ssh-deploy@v2.1.1
       env:
