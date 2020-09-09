@@ -9,7 +9,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-    - run: echo ${{ secrets.CONFIGURATION }} >> .env
+    - run: ${{ secrets.CONFIGURATION }} > .env
     - uses: actions/upload-artifact@master
       with:
         name: config
