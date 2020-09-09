@@ -38,6 +38,7 @@ jobs:
         path: build.tar.gz
   deploy:
     runs-on: ubuntu-latest
+    steps:
     - uses: actions/download-artifacts@master
     - name: Send artifacts to Server
       uses: easingthemes/ssh-deploy@v2.1.1
