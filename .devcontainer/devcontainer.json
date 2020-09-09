@@ -1,0 +1,20 @@
+{
+	"name": "After That",
+
+	"dockerComposeFile": [
+		"docker-compose.yml"
+	],
+
+	"service": "app",
+	"workspaceFolder": "/usr/src/app",
+	"settings": {
+		"terminal.integrated.shell.linux": null
+	},
+	"extensions": [
+		"wallabyjs.wallaby-vscode",
+		"dbaeumer.vscode-eslint",
+		"lourenci.go-to-spec"
+	],
+	"forwardPorts": [3333],
+	"remoteUser": "node"
+}

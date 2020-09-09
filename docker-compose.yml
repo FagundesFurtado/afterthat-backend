@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  backend-afterthat:
+    build: .
+    networks:
+    - petech
+    labels:
+      traefik.port: "3000"
+      traefik.docker.network: petech
+      traefik.frontend.headers.SSLRedirect: "true"
+      traefik.frontend.entryPoints: "http, https"
+      traefik.frontend.rule:  Host:afterthat.com.br; PathPrefixStrip:/api/
+    container_name: backend-afterthat
+    
+networks:
+  petech:
+    external: true

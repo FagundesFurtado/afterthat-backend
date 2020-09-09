@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "paths": {
+      "@song/*": [
+        "src/song/*"
+      ],
+      "@show/*": [
+        "src/modules/show/*"
+      ],
+      "@schedule/*": [
+        "src/modules/schedule/*"
+      ],
+      "@repertoire/*": [
+        "src/modules/repertoire/*"
+      ],
+      "@modules/*": [
+        "src/modules/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@test/*": [
+        "test/*"
+      ]
+    },
+  },
+  "exclude": ["node_modules", "dist"]
+}
