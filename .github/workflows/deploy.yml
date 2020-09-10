@@ -4,109 +4,81 @@ on:
   push:
     branches:
       - master
-env:
-  APPNAME: backend-afterthat
 
 jobs:
-  deploy:
-    name: Deploy
+  prepare:
     runs-on: ubuntu-latest
     steps:
-      - name: Install
-        uses: fifsky/ssh-action@master
-        with:
-          command: |
-            ls
-          host: ${{secrets.SSH_HOSTNAME}}
-          user: ${{secrets.SSH_USERNAME}}
-          key: ${{secrets.SSH_PRIVATE_KEY}}
-  # prepare:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Preparing .env file
-  #     env:
-  #       CONFIG: ${{ secrets.CONFIGURATION }}
-  #     run: echo "$CONFIG" > .env
-  #   - uses: actions/upload-artifact@master
-  #     with:
-  #       name: config
-  #       path: .env
-  # test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Decompress docker
-  #     uses: fifsky/ssh-action@master
-  #     with:
-  #       command: |
-  #         cd "${{env.PATH}}"
-  #       host: ${{ secrets.REMOTE_HOST }}
-  #       user: ${{ secrets.REMOTE_USER }}
-  #       key: ${{ secrets.SERVER_SSH_KEY }}
-  #       args: "-tt"
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v1
-  #   - uses: actions/download-artifact@master
-  #     with:
-  #       name: config
-  #       path: .
-  #   - name: Install Node.js
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: '12.x'
-  #   - name: Cache NPM dependencies
-  #     uses: actions/cache@v1
-  #     with:
-  #       path: ~/.npm
-  #       key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
-  #       restore-keys: |
-  #         ${{ runner.OS }}-npm-cache-
-  #   - name: Install npm dependencies
-  #     run: npm install
-  #   - name: Run build production
-  #     run: npm run build
-  #   - name: Compress files
-  #     run: tar -czf build.tar.gz ./dist .env package*.json pm2.json docker-compose.yml Dockerfile
-  #   - uses: actions/upload-artifact@master
-  #     with:
-  #       name: master
-  #       path: build.tar.gz
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   steps:
-  #   - uses: actions/download-artifact@master
-  #     with:
-  #       name: master
-  #       path: .
-  #   - name: Send artifacts to Server
-  #     uses: easingthemes/ssh-deploy@v2.1.1
-  #     env:
-  #         SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-  #         ARGS: "-rltgoDzvO --delete"
-  #         SOURCE: "build.tar.gz"
-  #         REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-  #         REMOTE_USER: ${{ secrets.REMOTE_USER }}
-  #         TARGET: ${{ secrets.REMOTE_TARGET }}
-  #   - name: Decompress docker
-  #     uses: fifsky/ssh-action@master
-  #     env: 
-  #         PATH: ${{ secrets.REMOTE_TARGET }}
-  #     with:
-  #       command: |
-  #         echo "ALO GALERA DO CHAPEU"
-  #         echo "$PATH" 
-  #         cd "${PATH}" 
-  #         tar -zxvf build.tar.gz && rm build.tar.gz
-  #       host: ${{ secrets.REMOTE_HOST }}
-  #       user: ${{ secrets.REMOTE_USER }}
-  #       key: ${{ secrets.SERVER_SSH_KEY}}
-  #   - name: Start docker
-  #     uses: fifsky/ssh-action@master
-  #     with:
-  #       command: |
-  #         docker-compose -f "${PATH}"docker-compose.yml up -d --force-recreate --build
-  #       host: ${{ secrets.REMOTE_HOST }}
-  #       user: ${{ secrets.REMOTE_USER }}
-  #       key: ${{ secrets.SERVER_SSH_KEY}}
+    - name: Preparing .env file
+      env:
+        CONFIG: ${{ secrets.CONFIGURATION }}
+      run: echo "$CONFIG" > .env
+    - uses: actions/upload-artifact@master
+      with:
+        name: config
+        path: .env
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/download-artifact@master
+      with:
+        name: config
+        path: .
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - name: Cache NPM dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-npm-cache-
+    - name: Install npm dependencies
+      run: npm install
+    - name: Run build production
+      run: npm run build
+    - name: Compress files
+      run: tar -czf build.tar.gz ./dist .env package*.json pm2.json docker-compose.yml Dockerfile
+    - uses: actions/upload-artifact@master
+      with:
+        name: master
+        path: build.tar.gz
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/download-artifact@master
+      with:
+        name: master
+        path: .
+    - name: Send artifacts to Server
+      uses: easingthemes/ssh-deploy@v2.1.1
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "build.tar.gz"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
+    - name: Decompress docker
+      uses: fifsky/ssh-action@master
+      env: 
+          PATH: ${{ secrets.REMOTE_TARGET }}
+      with:
+        command: |
+          cd apps/backend-afterthat
+          tar -zxvf build.tar.gz && rm build.tar.gz
+        host: ${{ secrets.REMOTE_HOST }}
+        user: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY}}
+    - name: Start docker
+      uses: fifsky/ssh-action@master
+      with:
+        command: |
+          docker-compose -f ~/apps/backend-afterthat/docker-compose.yml up -d --force-recreate --build
+        host: ${{ secrets.REMOTE_HOST }}
+        user: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY}}
