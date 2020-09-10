@@ -9,7 +9,8 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-    - run: ${{ secrets.CONFIGURATION }} > .env
+    - run: echo ${{ secrets.CONFIGURATION }} > .env
+    - run: echo ${{ secrets.CONFIGURATION }}
     - uses: actions/upload-artifact@master
       with:
         name: config
@@ -31,7 +32,7 @@ jobs:
     - name: Run build production
       run: npm run build
     - name: Compress files
-      run: tar -czf build.tar.gz .env dist package*.json pm2.json docker-compose.yml Dockerfile
+      run: tar -czf build.tar.gz ./dist .env package*.json pm2.json docker-compose.yml Dockerfile
     - uses: actions/upload-artifact@master
       with:
         name: master
