@@ -22,15 +22,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - name: Decompres docker
+    - name: Decompress docker
       uses: fifsky/ssh-action@master
       with:
         command: |
           cd "${{env.PATH}}"
-          ls 
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
+        args: "-tt"
   # build:
   #   runs-on: ubuntu-latest
   #   steps:
@@ -77,7 +77,7 @@ jobs:
   #         REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
   #         REMOTE_USER: ${{ secrets.REMOTE_USER }}
   #         TARGET: ${{ secrets.REMOTE_TARGET }}
-  #   - name: Decompres docker
+  #   - name: Decompress docker
   #     uses: fifsky/ssh-action@master
   #     env: 
   #         PATH: ${{ secrets.REMOTE_TARGET }}
