@@ -22,8 +22,6 @@ jobs:
     steps:
     - name: Decompres docker
       uses: fifsky/ssh-action@master
-      env: 
-          PATH: ${{ secrets.REMOTE_TARGET }}
       with:
         command: |
           echo "ALO GALERA DO CHAPEU"
