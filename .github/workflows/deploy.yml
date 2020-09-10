@@ -24,7 +24,7 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          echo "$host"
+          echo "$host teste teste"
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
