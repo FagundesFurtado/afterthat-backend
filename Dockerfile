@@ -1,4 +1,4 @@
-FROM pm2:latest-alpine
+FROM keymetrics/pm2:latest-alpine
 
 WORKDIR /app
 COPY . .

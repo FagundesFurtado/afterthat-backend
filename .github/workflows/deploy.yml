@@ -65,17 +65,19 @@ jobs:
           TARGET: ${{ secrets.REMOTE_TARGET }}
     - name: Decompres docker
       uses: fifsky/ssh-action@master
+      env: 
+          PATH: ${{ secrets.REMOTE_TARGET }}
       with:
         command: |
-          cd ~/apps/backend-afterthat/ && tar -zxvf build.tar.gz && rm build.tar.gz
+          cd $PATH && tar -zxvf build.tar.gz && rm build.tar.gz
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SERVER_SSH_KEY}}
-    # - name: Start docker
-    #   uses: fifsky/ssh-action@master
-    #   with:
-    #     command: |
-    #       docker-compose -f ~/apps/backend-afterthat/docker-compose.yml up -d --force-recreate --build
-    #     host: ${{ secrets.REMOTE_HOST }}
-    #     user: ${{ secrets.REMOTE_USER }}
-    #     key: ${{ secrets.SERVER_SSH_KEY}}
+    - name: Start docker
+      uses: fifsky/ssh-action@master
+      with:
+        command: |
+          docker-compose -f "${PATH}"docker-compose.yml up -d --force-recreate --build
+        host: ${{ secrets.REMOTE_HOST }}
+        user: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY}}
