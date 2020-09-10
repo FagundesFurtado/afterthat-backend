@@ -9,10 +9,10 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-    - run: echo ${{ secrets.CONFIGURATION }} > .env
-    - run: echo ${{ secrets.CONFIGURATION }}
-    - run: echo ${{ secrets.REMOTE_HOST }}
-    - run: echo ${{ secrets.REMOTE_USER }}
+    - name: Preparing .env file
+      env:
+        CONFIG: ${{ secrets.CONFIGURATION}}
+      - run: echo "$CONFIG" > .env
     - uses: actions/upload-artifact@master
       with:
         name: config
