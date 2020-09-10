@@ -69,7 +69,7 @@ jobs:
           PATH: ${{ secrets.REMOTE_TARGET }}
       with:
         command: |
-          cd $PATH && tar -zxvf build.tar.gz && rm build.tar.gz
+          echo "$PATH" && cd "$PATH" && tar -zxvf build.tar.gz && rm build.tar.gz
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SERVER_SSH_KEY}}
