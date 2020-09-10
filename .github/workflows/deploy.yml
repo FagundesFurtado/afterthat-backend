@@ -24,10 +24,11 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          echo "$host teste teste $REMOTE_HOST $user"
+          echo "$args teste teste $REMOTE_HOST $user"
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
+        args: ${{ secrets.REMOTE_TARGET }}
   # build:
   #   runs-on: ubuntu-latest
   #   steps:
