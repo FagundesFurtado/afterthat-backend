@@ -5,20 +5,20 @@ on:
     branches:
       - master
 env:
-  PATH: ${{secrets.TARGET}}
+  PATH: teste
 
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Preparing .env file
-      env:
-        CONFIG: ${{ secrets.CONFIGURATION }}
-      run: echo "$CONFIG" > .env
-    - uses: actions/upload-artifact@master
-      with:
-        name: config
-        path: .env
+  # prepare:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Preparing .env file
+  #     env:
+  #       CONFIG: ${{ secrets.CONFIGURATION }}
+  #     run: echo "$CONFIG" > .env
+  #   - uses: actions/upload-artifact@master
+  #     with:
+  #       name: config
+  #       path: .env
   test:
     runs-on: ubuntu-latest
     steps:
@@ -26,7 +26,7 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          echo "${{env.REMOTE_TARGET}} alo "
+          echo "${{env.PATH}} alo "
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
