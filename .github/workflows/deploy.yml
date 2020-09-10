@@ -26,7 +26,6 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          echo "${{secrets.REMOTE_TARGET}} alo "
           echo "${{env.REMOTE_TARGET}} alo "
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
