@@ -20,7 +20,7 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: |
-            cd apps/${{env.APPNAME}}
+            cd ~/apps/${{env.APPNAME}}
           host: ${{secrets.SSH_HOSTNAME}}
           user: ${{secrets.SSH_USERNAME}}
           key: ${{secrets.SSH_PRIVATE_KEY}}
