@@ -27,12 +27,9 @@ jobs:
       with:
         command: |
           echo "ALO GALERA DO CHAPEU"
-          echo "$PATH" 
-          cd "${PATH}" 
-          ls
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SERVER_SSH_KEY}}
+        key: ${{ secrets.SERVER_SSH_KEY }}
   # build:
   #   runs-on: ubuntu-latest
   #   steps:
