@@ -5,7 +5,7 @@ on:
     branches:
       - master
 env:
-  PATH: teste
+  PATH: apps
 
 jobs:
   # prepare:
@@ -26,7 +26,8 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          echo "${{env.PATH}} alo "
+          cd "${{env.PATH}}"
+          ls 
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
