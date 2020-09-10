@@ -5,9 +5,27 @@ on:
     branches:
       - master
 env:
-  PATH: apps
+  APPNAME: apps
 
 jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2-beta
+
+      - name: Install
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            cd apps/${{env.APPNAME}}
+          host: ${{secrets.SSH_HOSTNAME}}
+          user: ${{secrets.SSH_USERNAME}}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          port: 22
+          args: "-tt"
   # prepare:
   #   runs-on: ubuntu-latest
   #   steps:
@@ -19,18 +37,18 @@ jobs:
   #     with:
   #       name: config
   #       path: .env
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Decompress docker
-      uses: fifsky/ssh-action@master
-      with:
-        command: |
-          cd "${{env.PATH}}"
-        host: ${{ secrets.REMOTE_HOST }}
-        user: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        args: "-tt"
+  # test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Decompress docker
+  #     uses: fifsky/ssh-action@master
+  #     with:
+  #       command: |
+  #         cd "${{env.PATH}}"
+  #       host: ${{ secrets.REMOTE_HOST }}
+  #       user: ${{ secrets.REMOTE_USER }}
+  #       key: ${{ secrets.SERVER_SSH_KEY }}
+  #       args: "-tt"
   # build:
   #   runs-on: ubuntu-latest
   #   steps:
