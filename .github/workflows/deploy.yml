@@ -59,7 +59,7 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          tar -zxvf build.tar.gz && rm build.tar.gz
+          cd ~/apps/backend-afterthat/ && tar -zxvf build.tar.gz && rm build.tar.gz
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SERVER_SSH_KEY}}
