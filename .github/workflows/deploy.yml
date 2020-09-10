@@ -21,6 +21,7 @@ jobs:
         with:
           command: |
             cd ~/apps/${{env.APPNAME}}
+            ls
           host: ${{secrets.SSH_HOSTNAME}}
           user: ${{secrets.SSH_USERNAME}}
           key: ${{secrets.SSH_PRIVATE_KEY}}
