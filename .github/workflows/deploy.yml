@@ -65,8 +65,6 @@ jobs:
           TARGET: ${{ secrets.REMOTE_TARGET }}
     - name: Decompress docker
       uses: fifsky/ssh-action@master
-      env: 
-          PATH: ${{ secrets.REMOTE_TARGET }}
       with:
         command: |
           cd apps/backend-afterthat
