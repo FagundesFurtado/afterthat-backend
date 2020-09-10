@@ -12,7 +12,7 @@ jobs:
     - name: Preparing .env file
       env:
         CONFIG: ${{ secrets.CONFIGURATION }}
-      - run: echo "$CONFIG" > .env
+      run: echo "$CONFIG" > .env
     - uses: actions/upload-artifact@master
       with:
         name: config
