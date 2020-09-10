@@ -23,10 +23,8 @@ jobs:
     - name: Decompres docker
       uses: fifsky/ssh-action@master
       with:
-        env: 
-            PATH: ${{ secrets.REMOTE_TARGET }}
         command: |
-          echo "ALO GALERA DO CHAPEU"
+          echo "$host"
         host: ${{ secrets.REMOTE_HOST }}
         user: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
